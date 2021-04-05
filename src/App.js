@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import 'antd/dist/antd.css';
 import './index.css';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Button, Row, Col, Space } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -19,31 +20,44 @@ function App() {
 
   const toggle = () =>
     setCollapsed(collapsed=>!collapsed);
-  
-
 
   return (
-    <Layout>
+    <Router>
+      <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <Menu.Item key="1" icon={<VideoCameraOutlined />}>
-            Event
+            <span>Event</span>
+            <Link to="/event" />
           </Menu.Item>
           <Menu.Item key="2" icon={<UserOutlined />}>
-            People
+            <span>People</span>
+            <Link to="/people" />
           </Menu.Item>
           <Menu.Item key="3" icon={<UploadOutlined />}>
-            Profile
+            <span>Profile</span>
+            <Link to="/profile" />
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background" style={{padding:0}}>
-        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+        <Row align="space-between">
+          <Col >
+            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
               className: 'trigger',
               onClick: toggle,
             })}
+          </Col>
+      
+          <Col style={{marginRight:20}}>
+          <Space >
+            <Button >Login</Button>
+            <Button type="primary">Sign up</Button>
+          </Space>
+          </Col>
+        </Row>         
         </Header>
         <Content
           className="site-layout-background"
@@ -52,10 +66,16 @@ function App() {
             padding: 24,
             minHeight: 1000,
           }}>
-            Content
+            <Switch>
+              <Route path="/event">Event</Route>
+              <Route path="/people">People</Route>
+              <Route path="/profile">Profile</Route>
+              <Route path="/">Content</Route>
+            </Switch>
           </Content>
+        </Layout>
       </Layout>
-    </Layout>
+    </Router>
   );
 }
 
