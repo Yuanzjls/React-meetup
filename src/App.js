@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import 'antd/dist/antd.css';
 import './index.css';
-import { Layout, Menu, Button, Row, Col, Space } from 'antd';
+import { Layout, Menu, Button, Row, Col, Space, Calendar, Divider, Pagination} from 'antd';
+import Event from './Components/Event'
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -64,10 +65,24 @@ function App() {
           style={{
             margin: '24px 16px',
             padding: 24,
-            minHeight: 1000,
+            minHeight: 900,
           }}>
             <Switch>
-              <Route path="/event">Event</Route>
+              <Route path="/event">
+                <Row>
+                  <Col span={12}>                    
+                    <Event/><Divider/>                      
+                    <Event/><Divider/>
+                    <Event/><Divider/>
+                    <Pagination defaultCurrent={1} total={30} />
+                  </Col>
+                  <Col span={12}>
+                    <Calendar fullscreen={false} onPanelChange={(value, mode)=>{console.log(value, mode)}} />
+                  </Col>    
+              
+                </Row>
+              </Route>
+              
               <Route path="/people">People</Route>
               <Route path="/profile">Profile</Route>
               <Route path="/">Content</Route>
