@@ -70,11 +70,13 @@ function App() {
             <Switch>
               <Route path="/event">
                 <Row>
-                  <Col span={12}>                    
+                  <Col span={14}>                    
                     <Event/>
                   </Col>
-                  <Col span={12}>
-                    <Calendar fullscreen={false} onPanelChange={(value, mode)=>{console.log(value, mode)}} />
+                  <Col span={10}>
+                    <div className="site-calendar-demo-card">
+                      <Calendar fullscreen={false} onPanelChange={(value, mode)=>{console.log(value, mode)}} />
+                    </div>
                   </Col>    
               
                 </Row>
