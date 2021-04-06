@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import 'antd/dist/antd.css';
 import './index.css';
-import { Layout, Menu, Button, Row, Col, Space, Calendar, Divider, Pagination} from 'antd';
+import { Layout, Menu, Button, Row, Col, Space, Calendar} from 'antd';
 import Event from './Components/Event'
 import {
   MenuUnfoldOutlined,
@@ -12,7 +12,7 @@ import {
   UploadOutlined,
 } from '@ant-design/icons';
 
-const {Header, Sider, Content} = Layout;
+const {Header, Sider, Content, Footer} = Layout;
 
 
 function App() {
@@ -71,10 +71,7 @@ function App() {
               <Route path="/event">
                 <Row>
                   <Col span={12}>                    
-                    <Event/><Divider/>                      
-                    <Event/><Divider/>
-                    <Event/><Divider/>
-                    <Pagination defaultCurrent={1} total={30} />
+                    <Event/>
                   </Col>
                   <Col span={12}>
                     <Calendar fullscreen={false} onPanelChange={(value, mode)=>{console.log(value, mode)}} />
@@ -85,9 +82,10 @@ function App() {
               
               <Route path="/people">People</Route>
               <Route path="/profile">Profile</Route>
-              <Route path="/">Content</Route>
+              <Route path="/">Welcome to meet up weeb app</Route>
             </Switch>
           </Content>
+          <Footer style={{ textAlign: 'center' }}>Meetup app ©2021 Created by Yuan Zhou</Footer>
         </Layout>
       </Layout>
     </Router>
