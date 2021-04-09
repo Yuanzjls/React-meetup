@@ -1,9 +1,25 @@
 import "antd/dist/antd.css";
 import { List, Avatar, Space } from "antd";
 import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import axios from 'axios';
 export default function Event() {
+
+  const [events, setEvents] = useState(null);
+
+
+  useEffect(() => {
+    axios.get('https://dk-react-backend.herokuapp.com/events')
+      .then(res => setEvents(res.data))
+      .catch(error => console.error("Error: ", error))
+  }, [])
+
+
+
+  if (events === null) {
+    return <div></div>
+  }
+  console.log(events);
   const listData = [];
 
   for (let i = 0; i < 23; i++) {
