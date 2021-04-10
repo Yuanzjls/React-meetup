@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./index.css";
-import { Layout, Menu, Button, Row, Col, Space, Calendar } from "antd";
+import Calendarx from "./Components/Calendarx";
+import { Layout, Menu, Button, Row, Col, Space } from "antd";
+import EventDetail from "./Components/EventDetail";
 import Event from "./Components/Event";
 import {
   MenuUnfoldOutlined,
@@ -68,26 +70,22 @@ function App() {
             }}
           >
             <Switch>
+              <Route path="/event/:id">
+                <EventDetail />
+              </Route>
               <Route path="/event">
                 <Row>
                   <Col span={14}>
                     <Event />
                   </Col>
                   <Col span={10}>
-                    <div className="site-calendar-demo-card">
-                      <Calendar
-                        fullscreen={false}
-                        onPanelChange={(value, mode) => {
-                          console.log(value, mode);
-                        }}
-                      />
-                    </div>
+                    <Calendarx />
                   </Col>
                 </Row>
               </Route>
-
               <Route path="/people">People</Route>
               <Route path="/profile">Profile</Route>
+
               <Route path="/">Welcome to meet up weeb app</Route>
             </Switch>
           </Content>
