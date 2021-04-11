@@ -2,12 +2,13 @@ import "antd/dist/antd.css";
 import { List, Avatar, Space } from "antd";
 import { MessageOutlined, StarOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
-import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { setEvents } from "../features/event/eventSlice";
 import { format } from "../features/constants/DateFormat";
 import { Link } from "react-router-dom";
 import moment from 'moment';
+import { fetchEvent } from "../app/fetchEvent"
+import { IconText } from "../features/functions/IconText"
 
 export default function Event() {
 
@@ -17,9 +18,7 @@ export default function Event() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axios.get('https://dk-react-backend.herokuapp.com/events')
-      .then(res => dispatch(setEvents(res.data)))
-      .catch(error => console.error("Error: ", error))
+    dispatch(fetchEvent('', setEvents));
   }, [])
 
 
@@ -27,7 +26,7 @@ export default function Event() {
     return <div></div>
   }
 
-
+  // console.log(events.map(event => ({ event_reviews: event.event_reviews, id: event.id })));
   const listData = events.filter(element => filterByDateEnable ? moment(element.date).format(format) === date : true).map(data => {
 
     const commentCount = data.event_reviews === null ? 0 : data.event_reviews.length
@@ -40,15 +39,6 @@ export default function Event() {
       stars: stars, id: data.id
     };
   });
-
-
-
-  const IconText = ({ icon, text }) => (
-    <Space>
-      {React.createElement(icon)}
-      {text}
-    </Space>
-  );
 
   return (
     <List

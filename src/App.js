@@ -6,6 +6,7 @@ import Calendarx from "./Components/Calendarx";
 import { Layout, Menu, Button, Row, Col, Space } from "antd";
 import EventDetail from "./Components/EventDetail";
 import Event from "./Components/Event";
+import MapCard from "./Components/MapCard";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -28,12 +29,10 @@ function App() {
           <div className="logo" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             <Menu.Item key="1" icon={<VideoCameraOutlined />}>
-              <span>Event</span>
-              <Link to="/event" />
+              <Link to="/event">Event</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<UserOutlined />}>
-              <span>People</span>
-              <Link to="/people" />
+              <Link to="/people">People</Link>
             </Menu.Item>
             <Menu.Item key="3" icon={<UploadOutlined />}>
               <span>Profile</span>
@@ -45,12 +44,10 @@ function App() {
           <Header className="site-layout-background" style={{ padding: 0 }}>
             <Row align="space-between">
               <Col>
-                {React.createElement(
-                  collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                  {
-                    className: "trigger",
-                    onClick: toggle,
-                  }
+                {collapsed ? (
+                  <MenuUnfoldOutlined className="trigger" onClick={toggle} />
+                ) : (
+                  <MenuFoldOutlined className="trigger" onClick={toggle} />
                 )}
               </Col>
               <Col style={{ marginRight: 20 }}>
@@ -71,9 +68,19 @@ function App() {
           >
             <Switch>
               <Route path="/event/:id">
-                <EventDetail />
+                <Row>
+                  <Col span={14}>
+                    <EventDetail />
+                  </Col>
+                  <Col span={10}>
+                    <MapCard />
+                  </Col>
+                </Row>
               </Route>
-              <Route path="/event">
+              <Route path="/people">People</Route>
+              <Route path="/profile">Profile</Route>
+
+              <Route path="/">
                 <Row>
                   <Col span={14}>
                     <Event />
@@ -83,10 +90,6 @@ function App() {
                   </Col>
                 </Row>
               </Route>
-              <Route path="/people">People</Route>
-              <Route path="/profile">Profile</Route>
-
-              <Route path="/">Welcome to meet up weeb app</Route>
             </Switch>
           </Content>
           <Footer style={{ textAlign: "center" }}>
