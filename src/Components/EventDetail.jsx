@@ -26,7 +26,7 @@ export default function EventDetail() {
     if (eventDetail === null) {
         return <div>Hello</div>
     }
-    console.log(eventDetail);
+  
     const rate = eventDetail.reviews === null ? "NaN" : eventDetail.reviews.reduce((prev, cur) => prev + cur.rate, 0) / eventDetail.reviews.length;
 
 
