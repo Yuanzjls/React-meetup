@@ -2,8 +2,6 @@ import { Card, Row, Col, Button, Typography } from "antd"
 import GoogleMapReact from 'google-map-react';
 import moment from 'moment';
 import { useSelector } from "react-redux";
-import { compose, withProps } from "recompose"
-import EventDetail from "./EventDetail";
 import {HomeOutlined} from '@ant-design/icons';
 const format = "YYYY-MM-DD HH:mm";
 
@@ -21,7 +19,7 @@ export default function MapCard() {
     if (eventDetail === null) {
         return <></>
     }
-    console.log(eventDetail)
+    
     return <Card>
         <Row justify="space-between">
             <Col>

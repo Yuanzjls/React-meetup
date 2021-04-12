@@ -1,5 +1,5 @@
 import "antd/dist/antd.css";
-import { List, Avatar, Space } from "antd";
+import { List, Avatar } from "antd";
 import { MessageOutlined, StarOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,14 +19,13 @@ export default function Event() {
 
   useEffect(() => {
     dispatch(fetchEvent('', setEvents));
-  }, [])
+  }, [dispatch])
 
 
   if (events === null) {
     return <div></div>
   }
 
-  // console.log(events.map(event => ({ event_reviews: event.event_reviews, id: event.id })));
   const listData = events.filter(element => filterByDateEnable ? moment(element.date).format(format) === date : true).map(data => {
 
     const commentCount = data.event_reviews === null ? 0 : data.event_reviews.length

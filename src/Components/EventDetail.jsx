@@ -21,7 +21,7 @@ export default function EventDetail() {
         textAlign: 'left',
     };
     useEffect(() => dispatch(fetchEvent(id, setEventDetail)),
-        []);
+        [id, dispatch]);
 
     if (eventDetail === null) {
         return <div>Hello</div>
