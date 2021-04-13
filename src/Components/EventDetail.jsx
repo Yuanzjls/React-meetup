@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import { fetchEvent } from "../app/fetchEvent"
 import { setEventDetail } from "../features/event/eventSlice"
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Row, Col, Avatar, Tooltip, Space } from "antd";
+import { Card, Row, Col, Avatar, Tooltip, Space, Image } from "antd";
 import { IconText } from "../features/functions/IconText";
 import { StarOutlined } from "@ant-design/icons";
 export default function EventDetail() {
@@ -44,7 +44,7 @@ export default function EventDetail() {
             </Col>
         </Row>
         <Card.Grid style={gridCenter} hoverable={false}>
-            <img src={eventDetail.picture_url} alt="Event_image"></img>
+            <Image src={eventDetail.picture_url} alt="Event_image" />
         </Card.Grid>
         <Card.Grid style={gridLeft} hoverable={false}>Description: {eventDetail.description}</Card.Grid>
         <Card.Grid style={gridLeft} hoverable={false}>

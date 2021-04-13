@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./index.css";
 import Calendarx from "./Components/Calendarx";
-import { Layout, Menu, Button, Row, Col, Space } from "antd";
+import { Layout, Menu, Button, Row, Col, Space, Typography } from "antd";
 import EventDetail from "./Components/EventDetail";
 import Event from "./Components/Event";
 import MapCard from "./Components/MapCard";
@@ -16,6 +16,7 @@ import {
 } from "@ant-design/icons";
 
 const { Header, Sider, Content, Footer } = Layout;
+const { Text } = Typography;
 
 function App() {
   const [collapsed, setCollapsed] = useState(true);
@@ -35,7 +36,7 @@ function App() {
               <Link to="/people">People</Link>
             </Menu.Item>
             <Menu.Item key="3" icon={<UploadOutlined />}>
-              <span>Profile</span>
+              <Text strong>Profile</Text>
               <Link to="/profile" />
             </Menu.Item>
           </Menu>

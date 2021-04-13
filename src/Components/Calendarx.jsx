@@ -1,11 +1,11 @@
-import { Calendar, Switch } from "antd"
+import { Calendar, Switch, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux";
 import { setDate, setFilterByDateEnable } from "../features/event/eventSlice"
 import moment from 'moment';
 import { format } from "../features/constants/DateFormat"
 
 
-
+const { Text } = Typography;
 export default function Calendarx() {
 
     const date = useSelector((state) => state.event.date);
@@ -17,7 +17,7 @@ export default function Calendarx() {
 
 
     return <div className="site-calendar-demo-card" align="center">
-        <span>Filter by date : </span><Switch checked={filterByDateEnable} onChange={(value) => Dispatch(setFilterByDateEnable(value))} />
+        <Text strong>Filter by date : </Text><Switch checked={filterByDateEnable} onChange={(value) => Dispatch(setFilterByDateEnable(value))} />
         <Calendar
             value={moment(date, format)}
             fullscreen={false}

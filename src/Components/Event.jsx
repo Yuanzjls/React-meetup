@@ -1,5 +1,5 @@
 import "antd/dist/antd.css";
-import { List, Avatar, Space } from "antd";
+import { List, Avatar, Image } from "antd";
 import { MessageOutlined, StarOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,16 +26,18 @@ export default function Event() {
     return <div></div>
   }
 
-  // console.log(events.map(event => ({ event_reviews: event.event_reviews, id: event.id })));
   const listData = events.filter(element => filterByDateEnable ? moment(element.date).format(format) === date : true).map(data => {
 
     const commentCount = data.event_reviews === null ? 0 : data.event_reviews.length
     const stars = data.event_reviews === null ? 0 : data.event_reviews.reduce((accumulator, currentValue) => accumulator + currentValue.rate, 0);
 
     return {
-      title: data.title, avatar: data.host.profile_picture_url,
-      description: data.description, content: "",
-      pic: data.picture_url, commentCount: commentCount,
+      title: data.title,
+      avatar: data.host.profile_picture_url,
+      description: data.description,
+      content: "",
+      pic: data.picture_url,
+      commentCount: commentCount,
       stars: stars, id: data.id
     };
   });
@@ -60,7 +62,7 @@ export default function Event() {
             <IconText icon={MessageOutlined} text={item.commentCount} key="list-vertical-message" />,
           ]}
           extra={
-            <img
+            <Image
               width={272}
               alt="logo"
               src={item.pic}
