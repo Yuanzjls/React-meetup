@@ -40,7 +40,7 @@ export default function MapCard() {
         <div style={{ height: '33vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_KEY }}
-          defaultCenter={{lat: parseFloat(eventDetail.lat), lng:parseFloat(eventDetail.long)}}
+          center={{lat: parseFloat(eventDetail.lat), lng:parseFloat(eventDetail.long)}}
           defaultZoom={8}
         >
           <Marker
