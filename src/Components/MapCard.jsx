@@ -1,29 +1,25 @@
-import { Card, Row, Col, Button } from "antd"
-import { withScriptjs, GoogleMap, Marker, withGoogleMap } from "react-google-maps"
+import { Card, Row, Col, Button, Typography } from "antd"
+import GoogleMapReact from 'google-map-react';
 import moment from 'moment';
 import { useSelector } from "react-redux";
-import { compose, withProps } from "recompose"
-import EventDetail from "./EventDetail";
+import {HomeOutlined} from '@ant-design/icons';
 const format = "YYYY-MM-DD HH:mm";
 
-function Map(props) {
-    return (
-        <GoogleMap
-            defaultZoom={10}
-            defaultCenter={{ lat: parseFloat(props.lat), lng: parseFloat(props.lng) }} />
-    )
-}
 
+const Marker = ({ text }) => <div style={{display:"flex", flexDirection:"row", alignItems:"center"}}>    
+    <HomeOutlined/>
+    <Typography.Text>{text}</Typography.Text>
+</div>;
 
 export default function MapCard() {
 
     const eventDetail = useSelector(state => state.event.eventDetail);
 
-    console.log(EventDetail);
+    
     if (eventDetail === null) {
         return <></>
     }
-    const WrappedMap = withScriptjs(withGoogleMap(Map))
+    
     return <Card>
         <Row justify="space-between">
             <Col>
@@ -41,15 +37,18 @@ export default function MapCard() {
                 <p>{eventDetail.city}</p>
             </Col>
         </Row>
-        <div style={{ width: '33vw', height: '30vh', alignItems: 'center' }}>
-            <WrappedMap
-                lat={eventDetail.lat}
-                lng={eventDetail.long}
-                googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_KEY}`}
-                loadingElement={<div style={{ height: "100%" }}></div>}
-                containerElement={<div style={{ height: "100%" }}></div>}
-                mapElement={<div style={{ height: "100%" }}></div>}
-            />
+        <div style={{ height: '33vh', width: '100%' }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_KEY }}
+          defaultCenter={{lat: parseFloat(eventDetail.lat), lng:parseFloat(eventDetail.long)}}
+          defaultZoom={8}
+        >
+          <Marker
+            lat={parseFloat(eventDetail.lat)}
+            lng={parseFloat(eventDetail.long)}
+            text={eventDetail.address}
+          />
+        </GoogleMapReact>
         </div>
         <br></br>
         <Button type="primary" style={{ width: '100%' }}>Attend</Button>

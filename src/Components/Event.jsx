@@ -1,5 +1,9 @@
 import "antd/dist/antd.css";
+<<<<<<< HEAD
 import { List, Avatar, Image } from "antd";
+=======
+import { List, Avatar } from "antd";
+>>>>>>> 2d3753e7a1f11b95831273b36684f63d5c17e8b6
 import { MessageOutlined, StarOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +23,7 @@ export default function Event() {
 
   useEffect(() => {
     dispatch(fetchEvent('', setEvents));
-  }, [])
+  }, [dispatch])
 
 
   if (events === null) {
