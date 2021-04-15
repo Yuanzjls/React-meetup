@@ -7,6 +7,8 @@ import { Layout, Menu, Button, Row, Col, Space, Typography } from "antd";
 import EventDetail from "./Components/EventDetail";
 import Event from "./Components/Event";
 import MapCard from "./Components/MapCard";
+import Login from "./Components/Login";
+import Signup from "./Components/Signup";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -27,7 +29,9 @@ function App() {
     <Router>
       <Layout>
         <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className="logo" />
+          <Link to="/">
+            <div className="logo" />
+          </Link>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             <Menu.Item key="1" icon={<VideoCameraOutlined />}>
               <Link to="/event">Event</Link>
@@ -53,8 +57,12 @@ function App() {
               </Col>
               <Col style={{ marginRight: 20 }}>
                 <Space>
-                  <Button>Login</Button>
-                  <Button type="primary">Sign up</Button>
+                  <Link to="/login">
+                    <Button>Login</Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button type="primary">Sign up</Button>
+                  </Link>
                 </Space>
               </Col>
             </Row>
@@ -80,7 +88,12 @@ function App() {
               </Route>
               <Route path="/people">People</Route>
               <Route path="/profile">Profile</Route>
-
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/signup">
+                <Signup />
+              </Route>
               <Route path="/">
                 <Row>
                   <Col span={14}>
