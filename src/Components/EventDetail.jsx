@@ -3,9 +3,20 @@ import { useParams } from "react-router";
 import { fetchEvent } from "../app/fetchEvent";
 import { setEventDetail } from "../features/event/eventSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Row, Col, Avatar, Tooltip, Space, Image } from "antd";
+import {
+  Card,
+  Row,
+  Col,
+  Avatar,
+  Tooltip,
+  Space,
+  Image,
+  Rate,
+  Typography,
+} from "antd";
 import { IconText } from "../features/functions/IconText";
 import { StarOutlined } from "@ant-design/icons";
+import moment from "moment";
 export default function EventDetail() {
   const { id } = useParams();
   const eventDetail = useSelector((state) => state.event.eventDetail);
@@ -78,10 +89,22 @@ export default function EventDetail() {
       </Card.Grid>
       <Card.Grid style={gridLeft} hoverable={false}>
         <h4>What do other people think about this event?</h4>
-        <Card.Grid style={gridLeft} hoverable={false}>
-          1dsa
-        </Card.Grid>
       </Card.Grid>
+      {eventDetail.reviews?.map((review) => (
+        <Card.Grid style={gridLeft} hoverable={false}>
+          <Row align="space-between">
+            <Col>
+              <Rate allowHalf disabled defaultValue={review.rate} />
+            </Col>
+            <Col>
+              <Typography.Text>
+                Post at {moment(review.created_at).format("MM/DD - HH:mm")}
+              </Typography.Text>
+            </Col>
+          </Row>
+          <Typography.text>{review.review}</Typography.text>
+        </Card.Grid>
+      ))}
     </Card>
   );
 }
