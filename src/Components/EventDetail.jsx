@@ -17,6 +17,7 @@ import {
 import { IconText } from "../features/functions/IconText";
 import { StarOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { nanoid } from "nanoid";
 export default function EventDetail() {
   const { id } = useParams();
   const eventDetail = useSelector((state) => state.event.eventDetail);
@@ -40,7 +41,7 @@ export default function EventDetail() {
     eventDetail.reviews === null
       ? "NaN"
       : eventDetail.reviews.reduce((prev, cur) => prev + cur.rate, 0) /
-        eventDetail.reviews.length;
+      eventDetail.reviews.length;
 
   return (
     <Card
@@ -81,10 +82,10 @@ export default function EventDetail() {
           {eventDetail.attendees === null
             ? "No body will come"
             : eventDetail.attendees.map((ele) => (
-                <Tooltip title={`id: ${ele.id}`} placement="top" key={ele.id}>
-                  <Avatar src={ele.profile_picture_url} />
-                </Tooltip>
-              ))}{" "}
+              <Tooltip title={`id: ${ele.id}`} placement="top" key={ele.id}>
+                <Avatar src={ele.profile_picture_url} />
+              </Tooltip>
+            ))}{" "}
         </Space>
       </Card.Grid>
       <Card.Grid style={gridLeft} hoverable={false}>
@@ -92,17 +93,17 @@ export default function EventDetail() {
       </Card.Grid>
       {eventDetail.reviews?.map((review) => (
         <Card.Grid style={gridLeft} hoverable={false}>
-          <Row align="space-between">
-            <Col>
-              <Rate allowHalf disabled defaultValue={review.rate} />
+          <Row align="space-between" key={nanoid()}>
+            <Col key={nanoid()}>
+              <Rate allowHalf disabled defaultValue={review.rate} key={nanoid()} />
             </Col>
-            <Col>
-              <Typography.Text>
+            <Col key={nanoid()}>
+              <Typography.Text key={nanoid()}>
                 Post at {moment(review.created_at).format("MM/DD - HH:mm")}
               </Typography.Text>
             </Col>
           </Row>
-          <Typography.text>{review.review}</Typography.text>
+          <Typography.Text>{review.review}</Typography.Text>
         </Card.Grid>
       ))}
     </Card>

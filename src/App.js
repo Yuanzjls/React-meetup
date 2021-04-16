@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./index.css";
@@ -9,6 +9,7 @@ import Event from "./Components/Event";
 import MapCard from "./Components/MapCard";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
+import { useDispatch, useSelector } from "react-redux";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -16,15 +17,40 @@ import {
   VideoCameraOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+import {
+  setAuthorization,
+  setToken,
+  setFirstName,
+  setAuth,
+} from "./features/Auth/authSlice";
 
 const { Header, Sider, Content, Footer } = Layout;
 const { Text } = Typography;
 
 function App() {
   const [collapsed, setCollapsed] = useState(true);
+  const dispatch = useDispatch();
 
   const toggle = () => setCollapsed((collapsed) => !collapsed);
 
+  useEffect(() => {
+    const user_token = localStorage.getItem("user_token");
+    const first_name = localStorage.getItem("first_name");
+    if (user_token === null) {
+      dispatch(setAuth({ token: null, firstName: null, authorization: false }));
+    } else {
+      dispatch(
+        setAuth({
+          token: user_token,
+          firstName: first_name,
+          authorization: true,
+        })
+      );
+    }
+  }, []);
+
+  const auth = useSelector((state) => state.auth);
+  console.log(auth);
   return (
     <Router>
       <Layout>
@@ -56,14 +82,38 @@ function App() {
                 )}
               </Col>
               <Col style={{ marginRight: 20 }}>
-                <Space>
-                  <Link to="/login">
-                    <Button>Login</Button>
-                  </Link>
-                  <Link to="/signup">
-                    <Button type="primary">Sign up</Button>
-                  </Link>
-                </Space>
+                {auth.authorization ? (
+                  <>
+                    <Typography.Text>
+                      Weclome, {auth.firstName}{" "}
+                    </Typography.Text>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        localStorage.removeItem("user_token");
+                        localStorage.removeItem("first_name");
+                        dispatch(
+                          setAuth({
+                            token: null,
+                            firstName: null,
+                            authorization: false,
+                          })
+                        );
+                      }}
+                    >
+                      Log out
+                    </Button>
+                  </>
+                ) : (
+                  <Space>
+                    <Link to="/login">
+                      <Button>Login</Button>
+                    </Link>
+                    <Link to="/signup">
+                      <Button type="primary">Sign up</Button>
+                    </Link>
+                  </Space>
+                )}
               </Col>
             </Row>
           </Header>

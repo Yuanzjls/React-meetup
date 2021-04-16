@@ -11,16 +11,24 @@ export const eventSlice = createSlice({
   },
   reducers: {
     setEvents: (state, action) => {
-      state.events = action.payload;
+      const newState = { ...state };
+      newState.events = action.payload;
+      return newState;
     },
     setDate: (state, action) => {
-      state.date = action.payload;
+      const newState = { ...state };
+      newState.date = action.payload;
+      return newState;
     },
     setFilterByDateEnable: (state, action) => {
-      state.filterByDateEnable = action.payload;
+      const newState = { ...state };
+      newState.filterByDateEnable = action.payload;
+      return newState;
     },
     setEventDetail: (state, action) => {
-      state.eventDetail = action.payload;
+      const newState = { ...state };
+      newState.eventDetail = action.payload;
+      return newState;
     },
   },
 });

@@ -1,33 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
-import moment from "moment";
-import { format } from "../constants/DateFormat";
-export const eventSlice = createSlice({
+export const authSlice = createSlice({
   name: "auth",
   initialState: {
     authorization: false,
     token: null,
+    firstName: null,
   },
   reducers: {
-    setEvents: (state, action) => {
-      state.events = action.payload;
+    setAuthorization: (state, action) => {
+      const newState = { ...state };
+      newState.authorization = action.payload;
+      return newState;
     },
-    setDate: (state, action) => {
-      state.date = action.payload;
+    setToken: (state, action) => {
+      const newState = { ...state };
+      newState.token = action.payload;
+      return newState;
     },
-    setFilterByDateEnable: (state, action) => {
-      state.filterByDateEnable = action.payload;
+    setFirstName: (state, action) => {
+      const newState = { ...state };
+      newState.FirstName = action.payload;
+      return newState;
     },
-    setEventDetail: (state, action) => {
-      state.eventDetail = action.payload;
+    setAuth: (state, action) => {
+      let newState = action.payload;
+      return newState;
     },
   },
 });
 
 export const {
-  setEvents,
-  setDate,
-  setFilterByDateEnable,
-  setEventDetail,
-} = eventSlice.actions;
+  setAuthorization,
+  setToken,
+  setFirstName,
+  setAuth,
+} = authSlice.actions;
 
-export default eventSlice.reducer;
+export default authSlice.reducer;

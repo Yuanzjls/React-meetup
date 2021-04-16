@@ -1,8 +1,16 @@
 import { Form, Input, Button, Typography } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import {
+  setAuthorization,
+  setToken,
+  setFirstName,
+  setAuth,
+} from "../features/Auth/authSlice";
 
 export default function Login() {
+  const dispatch = useDispatch();
   let history = useHistory();
   const layout = {
     labelCol: { span: 8 },
@@ -24,6 +32,8 @@ export default function Login() {
       })
       .then((response) => {
         localStorage.setItem("user_token", response.data.token);
+        localStorage.setItem("first_name", values.email);
+        dispatch(setAuth({ token: response.data.token, firstName: values.email, authorization: true }));
         history.goBack();
       })
       .catch((error) => {
