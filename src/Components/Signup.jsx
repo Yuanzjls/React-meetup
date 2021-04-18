@@ -30,11 +30,9 @@ export default function Signup() {
         password: values.password,
       })
       .then((res) => {
-        console.log(res);
         history.push("/login");
       })
       .catch((error) => console.log(error));
-    console.log("Success:", values);
   };
 
   const onFinishFailed = (errorInfo) => {
