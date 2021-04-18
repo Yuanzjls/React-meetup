@@ -6,7 +6,7 @@ import Calendarx from "./Components/Calendarx";
 import { Layout, Menu, Button, Row, Col, Space, Typography } from "antd";
 import EventDetail from "./Components/EventDetail";
 import Event from "./Components/Event";
-import MapCard from "./Components/MapCard";
+
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,7 +50,7 @@ function App() {
   }, []);
 
   const auth = useSelector((state) => state.auth);
-  console.log(auth);
+
   return (
     <Router>
       <Layout>
@@ -59,13 +59,13 @@ function App() {
             <div className="logo" />
           </Link>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1" icon={<VideoCameraOutlined />}>
+            <Menu.Item key="Menu1" icon={<VideoCameraOutlined />}>
               <Link to="/event">Event</Link>
             </Menu.Item>
-            <Menu.Item key="2" icon={<UserOutlined />}>
+            <Menu.Item key="Menu2" icon={<UserOutlined />}>
               <Link to="/people">People</Link>
             </Menu.Item>
-            <Menu.Item key="3" icon={<UploadOutlined />}>
+            <Menu.Item key="Menu3" icon={<UploadOutlined />}>
               <Text strong>Profile</Text>
               <Link to="/profile" />
             </Menu.Item>
@@ -127,14 +127,7 @@ function App() {
           >
             <Switch>
               <Route path="/event/:id">
-                <Row>
-                  <Col span={14}>
-                    <EventDetail />
-                  </Col>
-                  <Col span={10}>
-                    <MapCard />
-                  </Col>
-                </Row>
+                <EventDetail />
               </Route>
               <Route path="/people">People</Route>
               <Route path="/profile">Profile</Route>

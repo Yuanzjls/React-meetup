@@ -38,7 +38,7 @@ export default function Login() {
       })
       .catch((error) => {
         alert("The email is not matched its password, try again");
-        console.log(error.response);
+
       });
   };
 
@@ -81,7 +81,7 @@ export default function Login() {
             },
           ]}
         >
-          <Input.Password className="ant-col-14" />
+          <Input.Password className="ant-col-14" autocomplete="on" />
         </Form.Item>
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">

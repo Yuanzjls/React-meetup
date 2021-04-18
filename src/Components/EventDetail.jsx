@@ -18,10 +18,15 @@ import { IconText } from "../features/functions/IconText";
 import { StarOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { nanoid } from "nanoid";
+import MapCard from "./MapCard";
+import axios from "axios";
+
 export default function EventDetail() {
   const { id } = useParams();
   const eventDetail = useSelector((state) => state.event.eventDetail);
+  const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  // const history = useHistory();
 
   const gridCenter = {
     width: "100%",
@@ -31,10 +36,21 @@ export default function EventDetail() {
     width: "100%",
     textAlign: "left",
   };
-  useEffect(() => dispatch(fetchEvent(id, setEventDetail)), [id, dispatch]);
 
+  useEffect(() => {
+    if (auth.authorization) {
+      const userToken = `Bearer ${auth.token}`;
+      axios.defaults.headers.Authorization = userToken;
+      dispatch(fetchEvent(id, setEventDetail));
+      axios.defaults.headers.Authorization = {};
+    }
+  }, [id, dispatch]);
+
+  if (auth.authorization === false) {
+    return <Typography.Text>You cannot access this page without log in, please click log in first.</Typography.Text>;
+  }
   if (eventDetail === null) {
-    return <div>Hello</div>;
+    return <div>Cannot fetch event detail</div>;
   }
 
   const rate =
@@ -44,68 +60,75 @@ export default function EventDetail() {
       eventDetail.reviews.length;
 
   return (
-    <Card
-      title={
-        <div
-          style={{
-            fontSize: "18px",
-          }}
+    <Row>
+      <Col span={14}>
+        <Card
+          title={
+            <div
+              style={{
+                fontSize: "18px",
+              }}
+            >
+              {eventDetail.title}
+            </div>
+          }
+          style={{ borderRightWidth: "24px" }}
         >
-          {eventDetail.title}
-        </div>
-      }
-      style={{ borderRightWidth: "24px" }}
-    >
-      <Row align="space-between" style={{ padding: "0 24px" }}>
-        <Col>Category: {eventDetail.category}</Col>
-        <Col>
-          <IconText icon={StarOutlined} text={rate}></IconText>
-        </Col>
-      </Row>
-      <Card.Grid style={gridCenter} hoverable={false}>
-        <Image src={eventDetail.picture_url} alt="Event_image" />
-      </Card.Grid>
-      <Card.Grid style={gridLeft} hoverable={false}>
-        Description: {eventDetail.description}
-      </Card.Grid>
-      <Card.Grid style={gridLeft} hoverable={false}>
-        <Avatar src={eventDetail.host.profile_picture_url} />
-        <span style={{ fontSize: "15px" }}>
-          &nbsp;&nbsp; Hostname: {eventDetail.host.first_name}{" "}
-          {eventDetail.host.last_name}
-        </span>
-      </Card.Grid>
-      <Card.Grid style={gridLeft} hoverable={false}>
-        <span style={{ fontSize: "15px" }}>Who are coming:</span>
-        <br></br>
-        <Space size={20}>
-          {eventDetail.attendees === null
-            ? "No body will come"
-            : eventDetail.attendees.map((ele) => (
-              <Tooltip title={`id: ${ele.id}`} placement="top" key={ele.id}>
-                <Avatar src={ele.profile_picture_url} />
-              </Tooltip>
-            ))}{" "}
-        </Space>
-      </Card.Grid>
-      <Card.Grid style={gridLeft} hoverable={false}>
-        <h4>What do other people think about this event?</h4>
-      </Card.Grid>
-      {eventDetail.reviews?.map((review) => (
-        <Card.Grid style={gridLeft} hoverable={false}>
-          <Row align="space-between" key={nanoid()}>
-            <Col key={nanoid()}>
-              <Rate allowHalf disabled defaultValue={review.rate} key={nanoid()} />
-            </Col>
-            <Col key={nanoid()}>
-              <Typography.Text key={nanoid()}>
-                Post at {moment(review.created_at).format("MM/DD - HH:mm")}
-              </Typography.Text>
+          <Row align="space-between" style={{ padding: "0 24px" }}>
+            <Col>Category: {eventDetail.category}</Col>
+            <Col>
+              <IconText icon={StarOutlined} text={rate}></IconText>
             </Col>
           </Row>
-          <Typography.Text>{review.review}</Typography.Text>
-        </Card.Grid>
-      ))}
-    </Card>
+          <Card.Grid style={gridCenter} hoverable={false}>
+            <Image src={eventDetail.picture_url} alt="Event_image" />
+          </Card.Grid>
+          <Card.Grid style={gridLeft} hoverable={false}>
+            Description: {eventDetail.description}
+          </Card.Grid>
+          <Card.Grid style={gridLeft} hoverable={false}>
+            <Avatar src={eventDetail.host.profile_picture_url} />
+            <span style={{ fontSize: "15px" }}>
+              &nbsp;&nbsp; Hostname: {eventDetail.host.first_name}{" "}
+              {eventDetail.host.last_name}
+            </span>
+          </Card.Grid>
+          <Card.Grid style={gridLeft} hoverable={false}>
+            <span style={{ fontSize: "15px" }}>Who are coming:</span>
+            <br></br>
+            <Space size={20}>
+              {eventDetail.attendees === null
+                ? "No body will come"
+                : eventDetail.attendees.map((ele) => (
+                  <Tooltip title={`id: ${ele.id}`} placement="top" key={ele.id}>
+                    <Avatar src={ele.profile_picture_url} />
+                  </Tooltip>
+                ))}{" "}
+            </Space>
+          </Card.Grid>
+          <Card.Grid style={gridLeft} hoverable={false}>
+            <h4>What do other people think about this event?</h4>
+          </Card.Grid>
+          {eventDetail.reviews?.map((review) => (
+            <Card.Grid style={gridLeft} hoverable={false}>
+              <Row align="space-between" key={nanoid()}>
+                <Col key={nanoid()}>
+                  <Rate allowHalf disabled defaultValue={review.rate} key={nanoid()} />
+                </Col>
+                <Col key={nanoid()}>
+                  <Typography.Text key={nanoid()}>
+                    Post at {moment(review.created_at).format("MM/DD - HH:mm")}
+                  </Typography.Text>
+                </Col>
+              </Row>
+              <Typography.Text>{review.review}</Typography.Text>
+            </Card.Grid>
+          ))}
+        </Card>
+      </Col>
+      <Col span={10}>
+        <MapCard />
+      </Col>
+    </Row>
   );
 }
