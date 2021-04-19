@@ -33,12 +33,17 @@ export default function Login() {
       .then((response) => {
         localStorage.setItem("user_token", response.data.token);
         localStorage.setItem("first_name", values.email);
-        dispatch(setAuth({ token: response.data.token, firstName: values.email, authorization: true }));
+        dispatch(
+          setAuth({
+            token: response.data.token,
+            firstName: values.email,
+            authorization: true,
+          })
+        );
         history.goBack();
       })
       .catch((error) => {
         alert("The email is not matched its password, try again");
-
       });
   };
 
@@ -81,7 +86,7 @@ export default function Login() {
             },
           ]}
         >
-          <Input.Password className="ant-col-14" autocomplete="on" />
+          <Input.Password className="ant-col-14" autoComplete="on" />
         </Form.Item>
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
