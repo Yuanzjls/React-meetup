@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { fetchEvent } from "../app/fetchEvent";
 import { IconText } from "../features/functions/IconText";
+import { sumReduce } from "../features/functions/SumReduce";
 
 export default function Event() {
   const events = useSelector((state) => state.event.events);
@@ -36,10 +37,7 @@ export default function Event() {
       const stars =
         data.event_reviews === null
           ? 0
-          : data.event_reviews.reduce(
-              (accumulator, currentValue) => accumulator + currentValue.rate,
-              0
-            );
+          : data.event_reviews.reduce(sumReduce, 0);
 
       return {
         title: data.title,

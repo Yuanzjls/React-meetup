@@ -20,6 +20,8 @@ import moment from "moment";
 import { nanoid } from "nanoid";
 import MapCard from "./MapCard";
 import axios from "axios";
+import { sumReduce } from "../features/functions/SumReduce";
+import "./index.css";
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -27,10 +29,6 @@ export default function EventDetail() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const gridCenter = {
-    width: "100%",
-    textAlign: "center",
-  };
   const gridLeft = {
     width: "100%",
     textAlign: "left",
@@ -64,46 +62,53 @@ export default function EventDetail() {
   const rate =
     eventDetail.reviews === null
       ? "NaN"
-      : eventDetail.reviews.reduce((prev, cur) => prev + cur.rate, 0) /
-        eventDetail.reviews.length;
+      : eventDetail.reviews.reduce(sumReduce, 0) / eventDetail.reviews.length;
 
   return (
     <Row>
       <Col key={nanoid()} span={14}>
         <Card
           key={nanoid()}
-          title={
-            <div
-              style={{
-                fontSize: "18px",
-              }}
-            >
-              {eventDetail.title}
-            </div>
-          }
-          style={{ borderRightWidth: "24px" }}
+          title={<div className="eventcard-title">{eventDetail.title}</div>}
+          className="eventcard-body"
         >
-          <Row align="space-between" style={{ padding: "0 24px" }}>
+          <Row align="space-between" className="eventcard-row">
             <Col>Category: {eventDetail.category}</Col>
             <Col>
               <IconText icon={StarOutlined} text={rate}></IconText>
             </Col>
           </Row>
-          <Card.Grid key={nanoid()} style={gridCenter} hoverable={false}>
+          <Card.Grid
+            key={nanoid()}
+            className="eventcard-centergrid"
+            hoverable={false}
+          >
             <Image src={eventDetail.picture_url} alt="Event_image" />
           </Card.Grid>
-          <Card.Grid key={nanoid()} style={gridLeft} hoverable={false}>
+          <Card.Grid
+            key={nanoid()}
+            className="eventcard-leftgrid"
+            hoverable={false}
+          >
             Description: {eventDetail.description}
           </Card.Grid>
-          <Card.Grid key={nanoid()} style={gridLeft} hoverable={false}>
+          <Card.Grid
+            key={nanoid()}
+            className="eventcard-leftgrid"
+            hoverable={false}
+          >
             <Avatar src={eventDetail.host.profile_picture_url} />
-            <span style={{ fontSize: "15px" }}>
+            <span className="eventcard-subtitle">
               &nbsp;&nbsp; Hostname: {eventDetail.host.first_name}{" "}
               {eventDetail.host.last_name}
             </span>
           </Card.Grid>
-          <Card.Grid key={nanoid()} style={gridLeft} hoverable={false}>
-            <span style={{ fontSize: "15px" }}>Who are coming:</span>
+          <Card.Grid
+            key={nanoid()}
+            className="eventcard-leftgrid"
+            hoverable={false}
+          >
+            <span className="eventcard-subtitle">Who are coming:</span>
             <br></br>
             <Space size={20}>
               {eventDetail.attendees === null
@@ -119,11 +124,11 @@ export default function EventDetail() {
                   ))}{" "}
             </Space>
           </Card.Grid>
-          <Card.Grid style={gridLeft} hoverable={false}>
+          <Card.Grid className="eventcard-leftgrid" hoverable={false}>
             <h4>What do other people think about this event?</h4>
           </Card.Grid>
           {eventDetail.reviews?.map((review) => (
-            <Card.Grid style={gridLeft} hoverable={false}>
+            <Card.Grid className="eventcard-leftgrid" hoverable={false}>
               <Row align="space-between" key={nanoid()}>
                 <Col key={nanoid()}>
                   <Rate

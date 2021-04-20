@@ -72,7 +72,7 @@ function App() {
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
+          <Header className="site-layout-background site-layout-background-header">
             <Row align="space-between">
               <Col>
                 {collapsed ? (
@@ -81,7 +81,7 @@ function App() {
                   <MenuFoldOutlined className="trigger" onClick={toggle} />
                 )}
               </Col>
-              <Col style={{ marginRight: 20 }}>
+              <Col classNam="col-login">
                 {auth.authorization ? (
                   <>
                     <Typography.Text>
@@ -117,14 +117,7 @@ function App() {
               </Col>
             </Row>
           </Header>
-          <Content
-            className="site-layout-background"
-            style={{
-              margin: "24px 16px",
-              padding: 24,
-              minHeight: 900,
-            }}
-          >
+          <Content className="site-layout-background-content site-layout-background">
             <Switch>
               <Route path="/event/:id">
                 <EventDetail />
@@ -149,7 +142,7 @@ function App() {
               </Route>
             </Switch>
           </Content>
-          <Footer style={{ textAlign: "center" }}>
+          <Footer className="footer">
             Meetup app ©2021 Created by Yuan Zhou
           </Footer>
         </Layout>

@@ -7,7 +7,7 @@ import { formatDateHour as format } from "../features/constants/DateFormat";
 import { googleMapAPIKey } from "../features/constants//env";
 
 const Marker = ({ text }) => (
-  <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+  <div className="googlemapmarker">
     <HomeOutlined />
     <Typography.Text>{text}</Typography.Text>
   </div>
@@ -17,7 +17,7 @@ export default function MapCard() {
   const eventDetail = useSelector((state) => state.event.eventDetail);
 
   if (eventDetail === null) {
-    return <></>;
+    return;
   }
 
   return (
@@ -38,7 +38,7 @@ export default function MapCard() {
           <p>{eventDetail.city}</p>
         </Col>
       </Row>
-      <div style={{ height: "33vh", width: "100%" }}>
+      <div className="googlemapdiv">
         <GoogleMapReact
           bootstrapURLKeys={{ key: googleMapAPIKey }}
           center={{
@@ -55,7 +55,7 @@ export default function MapCard() {
         </GoogleMapReact>
       </div>
       <br></br>
-      <Button type="primary" style={{ width: "100%" }}>
+      <Button type="primary" className="buttonatten">
         Attend
       </Button>
     </Card>

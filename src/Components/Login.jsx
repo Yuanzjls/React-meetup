@@ -60,7 +60,7 @@ export default function Login() {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
-        <Typography.Title level={2} style={{ textAlign: "center" }}>
+        <Typography.Title level={2} className="textcenter">
           Login
         </Typography.Title>
         <Form.Item
@@ -93,7 +93,7 @@ export default function Login() {
             Login
           </Button>
         </Form.Item>
-        <div style={{ textAlign: "center" }}>
+        <div className="textcenter">
           <Typography.Text>
             Don't have a account? <Link to="/signup">Sign up </Link>now
           </Typography.Text>
