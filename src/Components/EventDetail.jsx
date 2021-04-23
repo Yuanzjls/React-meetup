@@ -13,6 +13,7 @@ import {
   Image,
   Rate,
   Typography,
+  Button,
 } from "antd";
 import { IconText } from "../features/functions/IconText";
 import { StarOutlined } from "@ant-design/icons";
@@ -124,9 +125,16 @@ export default function EventDetail() {
           </Card.Grid>
           <Card.Grid className="eventcard-leftgrid" hoverable={false}>
             <h4>What do other people think about this event?</h4>
+            <Button type="link" block>
+              Add Review
+            </Button>
           </Card.Grid>
           {eventDetail.reviews?.map((review) => (
-            <Card.Grid className="eventcard-leftgrid" hoverable={false}>
+            <Card.Grid
+              className="eventcard-leftgrid"
+              hoverable={false}
+              key={nanoid()}
+            >
               <Row align="space-between" key={nanoid()}>
                 <Col key={nanoid()}>
                   <Rate
@@ -148,7 +156,7 @@ export default function EventDetail() {
         </Card>
       </Col>
       <Col key={nanoid()} span={10}>
-        <MapCard attendOfMe={attendOfMe} />
+        <MapCard attendOfMe={attendOfMe} update={fetchWithAuth} />
       </Col>
     </Row>
   );

@@ -33,6 +33,7 @@ export default function MapCard(props) {
             content: `You have successfully registered this event.`,
           });
           setAttendOfMe(true);
+          props.update();
         })
         .catch((error) => console.error(error));
     } else {
@@ -44,6 +45,7 @@ export default function MapCard(props) {
             content: `You have successfully canceled registering this event.`,
           });
           setAttendOfMe(false);
+          props.update();
         })
         .catch((error) => console.error(error));
     }
