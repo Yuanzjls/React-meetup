@@ -1,4 +1,4 @@
-import { Card, Row, Col, Button, Typography } from "antd";
+import { Card, Row, Col, Button, Typography, Modal } from "antd";
 import GoogleMapReact from "google-map-react";
 import moment from "moment";
 import { useSelector } from "react-redux";
@@ -20,6 +20,11 @@ export default function MapCard() {
     return;
   }
 
+  function Click() {
+    Modal.success({
+      content: `You have successfully registered this event.`,
+    });
+  }
   return (
     <Card>
       <Row justify="space-between">
@@ -55,7 +60,7 @@ export default function MapCard() {
         </GoogleMapReact>
       </div>
       <br></br>
-      <Button type="primary" className="buttonatten">
+      <Button type="primary" className="buttonatten" onClick={Click}>
         Attend
       </Button>
     </Card>
