@@ -29,16 +29,8 @@ export default function EventDetail() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const gridLeft = {
-    width: "100%",
-    textAlign: "left",
-  };
-
   function fetchWithAuth() {
-    const userToken = `Bearer ${auth.token}`;
-    axios.defaults.headers.Authorization = userToken;
     dispatch(fetchEvent(id, setEventDetail));
-    axios.defaults.headers.Authorization = {};
   }
 
   useEffect(() => {
@@ -63,7 +55,13 @@ export default function EventDetail() {
     eventDetail.reviews === null
       ? "NaN"
       : eventDetail.reviews.reduce(sumReduce, 0) / eventDetail.reviews.length;
-
+  const attendOfMe =
+    eventDetail.attendees === null
+      ? false
+      : eventDetail.attendees
+          .map((attendee) => attendee.id)
+          .includes(auth.user_id);
+  console.log(auth.user_id);
   return (
     <Row>
       <Col key={nanoid()} span={14}>
@@ -75,7 +73,7 @@ export default function EventDetail() {
           <Row align="space-between" className="eventcard-row">
             <Col>Category: {eventDetail.category}</Col>
             <Col>
-              <IconText icon={StarOutlined} text={rate}></IconText>
+              <IconText icon={StarOutlined} text={rate.toFixed(1)}></IconText>
             </Col>
           </Row>
           <Card.Grid
@@ -150,7 +148,7 @@ export default function EventDetail() {
         </Card>
       </Col>
       <Col key={nanoid()} span={10}>
-        <MapCard />
+        <MapCard attendOfMe={attendOfMe} />
       </Col>
     </Row>
   );

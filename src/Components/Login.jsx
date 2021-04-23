@@ -40,6 +40,8 @@ export default function Login() {
             authorization: true,
           })
         );
+        const userToken = `Bearer ${response.data.token}`;
+        axios.defaults.headers.Authorization = userToken;
         history.goBack();
       })
       .catch((error) => {

@@ -23,6 +23,7 @@ import {
   setFirstName,
   setAuth,
 } from "./features/Auth/authSlice";
+import axios from "axios";
 
 const { Header, Sider, Content, Footer } = Layout;
 const { Text } = Typography;
@@ -38,6 +39,7 @@ function App() {
     const first_name = localStorage.getItem("first_name");
     if (user_token === null) {
       dispatch(setAuth({ token: null, firstName: null, authorization: false }));
+      axios.defaults.headers.Authorization = {};
     } else {
       dispatch(
         setAuth({
@@ -46,6 +48,8 @@ function App() {
           authorization: true,
         })
       );
+      const userToken = `Bearer ${user_token}`;
+      axios.defaults.headers.Authorization = userToken;
     }
   }, []);
 
@@ -99,6 +103,7 @@ function App() {
                             authorization: false,
                           })
                         );
+                        axios.defaults.headers.Authorization = {};
                       }}
                     >
                       Log out
