@@ -124,10 +124,14 @@ export default function EventDetail() {
             </Space>
           </Card.Grid>
           <Card.Grid className="eventcard-leftgrid" hoverable={false}>
-            <h4>What do other people think about this event?</h4>
-            <Button type="link" block>
-              Add Review
-            </Button>
+            <Row align="space-between" key={nanoid()}>
+              <Col>
+                <h4>What do other people think about this event?</h4>
+              </Col>
+              <Col>
+                <Button type="link">Add Review</Button>
+              </Col>
+            </Row>
           </Card.Grid>
           {eventDetail.reviews?.map((review) => (
             <Card.Grid
