@@ -43,7 +43,6 @@ export default function People() {
         }
 
         setLoading(true);
-        // setLoading(false); setIndex(index => index + 4);
         setTimeout(() => { setLoading(false); setIndex(index => index + 4); }, 1500)
 
     };
