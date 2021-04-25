@@ -6,9 +6,9 @@ import Calendarx from "./Components/Calendarx";
 import { Layout, Menu, Button, Row, Col, Space, Typography } from "antd";
 import EventDetail from "./Components/EventDetail";
 import Event from "./Components/Event";
-
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
+import People from "./Components/People";
 import { useDispatch, useSelector } from "react-redux";
 import {
   MenuUnfoldOutlined,
@@ -22,7 +22,7 @@ import {
   setToken,
   setFirstName,
   setAuth,
-} from "./features/Auth/authSlice";
+} from "./features/auth/authSlice";
 import axios from "axios";
 
 const { Header, Sider, Content, Footer } = Layout;
@@ -85,7 +85,7 @@ function App() {
                   <MenuFoldOutlined className="trigger" onClick={toggle} />
                 )}
               </Col>
-              <Col classNam="col-login">
+              <Col className="col-login">
                 {auth.authorization ? (
                   <>
                     <Typography.Text>
@@ -127,7 +127,9 @@ function App() {
               <Route path="/event/:id">
                 <EventDetail />
               </Route>
-              <Route path="/people">People</Route>
+              <Route path="/people">
+                <People />
+              </Route>
               <Route path="/profile">Profile</Route>
               <Route path="/login">
                 <Login />

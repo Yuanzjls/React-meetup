@@ -24,6 +24,7 @@ import { nanoid } from "nanoid";
 import MapCard from "./MapCard";
 import { sumReduce } from "../features/functions/SumReduce";
 import axios from "axios";
+import Loading from "./Loading"
 import "./index.css";
 
 export default function EventDetail() {
@@ -43,7 +44,7 @@ export default function EventDetail() {
     if (auth.authorization) {
       fetchWithAuth();
     }
-  }, []);
+  }, [auth.authorization]);
 
   if (auth.authorization === false) {
     return (
@@ -54,7 +55,7 @@ export default function EventDetail() {
   }
   if (eventDetail === null) {
     fetchWithAuth();
-    return;
+    return <Loading />;
   }
 
   const rate =

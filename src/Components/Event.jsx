@@ -10,7 +10,7 @@ import moment from "moment";
 import { fetchEvent } from "../app/fetchEvent";
 import { IconText } from "../features/functions/IconText";
 import { sumReduce } from "../features/functions/SumReduce";
-
+import Loading from "./Loading"
 export default function Event() {
   const events = useSelector((state) => state.event.events);
   const date = useSelector((state) => state.event.date);
@@ -24,7 +24,7 @@ export default function Event() {
   }, [dispatch]);
 
   if (events === null) {
-    return null;
+    return <Loading />;
   }
 
   const listData = events
@@ -56,7 +56,7 @@ export default function Event() {
       itemLayout="vertical"
       size="large"
       pagination={{
-        onChange: (page) => {},
+        onChange: (page) => { },
         pageSize: 3,
       }}
       dataSource={listData}

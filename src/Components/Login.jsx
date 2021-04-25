@@ -3,11 +3,9 @@ import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
-  setAuthorization,
-  setToken,
-  setFirstName,
+
   setAuth,
-} from "../features/Auth/authSlice";
+} from "../features/auth/authSlice";
 
 export default function Login() {
   const dispatch = useDispatch();
