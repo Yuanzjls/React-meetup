@@ -14,6 +14,15 @@ const formItemStyle = {
   flexDirection: "column",
 };
 /* eslint-disable no-template-curly-in-string */
+const categories = [
+  "Art",
+  "Business",
+  "Learning",
+  "Music",
+  "Social",
+  "Sports",
+  "Tech",
+];
 
 const CreateEvent = () => {
   return (
@@ -95,7 +104,13 @@ const CreateEvent = () => {
               ]}
               labelAlign="left"
             >
-              <Select />
+              <Select placeholder="Select a category">
+                {categories.map((cate) => (
+                  <Select.Option key={cate} value={cate}>
+                    {cate}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           </div>
           <Form.Item
@@ -116,6 +131,7 @@ const CreateEvent = () => {
         <div></div>
         <div style={{ width: "50%" }}>
           <Button
+            htmlType="submit"
             style={{ display: "inline-table", width: "100%" }}
             type="primary"
           >
