@@ -24,6 +24,7 @@ import {
   setAuth,
 } from "./features/auth/authSlice";
 import axios from "axios";
+import { CreateEvent } from "./Components/CreateEvent";
 
 const { Header, Sider, Content, Footer } = Layout;
 const { Text } = Typography;
@@ -124,6 +125,9 @@ function App() {
           </Header>
           <Content className="site-layout-background-content site-layout-background">
             <Switch>
+              <Route path="/event/create">
+                <CreateEvent></CreateEvent>
+              </Route>
               <Route path="/event/:id">
                 <EventDetail />
               </Route>
@@ -143,7 +147,19 @@ function App() {
                     <Event />
                   </Col>
                   <Col span={10}>
-                    <Calendarx />
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      {auth.authorization && (
+                        <Link
+                          to="/event/create"
+                          style={{ margin: "20px 0 20px 0" }}
+                        >
+                          <Button style={{ width: "100%" }} type="primary">
+                            Host an event
+                          </Button>
+                        </Link>
+                      )}
+                      <Calendarx />
+                    </div>
                   </Col>
                 </Row>
               </Route>
