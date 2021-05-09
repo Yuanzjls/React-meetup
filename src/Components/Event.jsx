@@ -1,76 +1,82 @@
 import "antd/dist/antd.css";
-import { List, Avatar, Space } from "antd";
-import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
-import React from "react";
+import { List, Avatar, Image } from "antd";
+import { MessageOutlined, StarOutlined } from "@ant-design/icons";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setEvents } from "../features/event/eventSlice";
+import { format } from "../features/constants/DateFormat";
+import { Link } from "react-router-dom";
+import moment from 'moment';
+import { fetchEvent } from "../app/fetchEvent"
+import { IconText } from "../features/functions/IconText"
 
 export default function Event() {
-  const listData = [];
 
-  for (let i = 0; i < 23; i++) {
-    listData.push({
-      href: "https://ant.design",
-      title: `ant design part ${i}`,
-      avatar:
-        "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-      description:
-        "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-      content:
-        "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-    });
+  const events = useSelector(state => state.event.events);
+  const date = useSelector(state => state.event.date)
+  const filterByDateEnable = useSelector(state => state.event.filterByDateEnable);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchEvent('', setEvents));
+  }, [dispatch])
+
+
+  if (events === null) {
+    return <div></div>
   }
-  const IconText = ({ icon, text }) => (
-    <Space>
-      {React.createElement(icon)}
-      {text}
-    </Space>
-  );
+
+  const listData = events.filter(element => filterByDateEnable ? moment(element.date).format(format) === date : true).map(data => {
+
+    const commentCount = data.event_reviews === null ? 0 : data.event_reviews.length
+    const stars = data.event_reviews === null ? 0 : data.event_reviews.reduce((accumulator, currentValue) => accumulator + currentValue.rate, 0);
+
+    return {
+      title: data.title,
+      avatar: data.host.profile_picture_url,
+      description: data.description,
+      content: "",
+      pic: data.picture_url,
+      commentCount: commentCount,
+      stars: stars, id: data.id
+    };
+  });
+
   return (
     <List
       itemLayout="vertical"
       size="large"
       pagination={{
-        onChange: (page) => {
-          console.log(page);
+        onChange: page => {
+
         },
         pageSize: 3,
       }}
       dataSource={listData}
-      renderItem={(item) => (
+
+      renderItem={item => (
         <List.Item
           key={item.title}
           actions={[
-            <IconText
-              icon={StarOutlined}
-              text="156"
-              key="list-vertical-star-o"
-            />,
-            <IconText
-              icon={LikeOutlined}
-              text="156"
-              key="list-vertical-like-o"
-            />,
-            <IconText
-              icon={MessageOutlined}
-              text="2"
-              key="list-vertical-message"
-            />,
+            <IconText icon={StarOutlined} text={'2'} key="list-vertical-star-o" />,
+            <IconText icon={MessageOutlined} text={item.commentCount} key="list-vertical-message" />,
           ]}
           extra={
-            <img
+            <Image
               width={272}
               alt="logo"
-              src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+              src={item.pic}
             />
           }
         >
           <List.Item.Meta
-            avatar={<Avatar scr={item.avatar} />}
-            title={<a href={item.href}>{item.title}</a>}
+            avatar={<Avatar src={item.avatar} />}
+            title={<Link to={`/event/${item.id}`}>{item.title}</Link>}
             description={item.description}
           />
           {item.content}
         </List.Item>
       )}
-    />
-  );
+    />)
+
 }
