@@ -27,3 +27,13 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.site-layout-background-header {
+  padding: 0px !important;
+}
+
+.site-layout-background-content {
+  margin: 24px 16px !important;
+  padding: 24px !important;
+  min-height: 900px !important;
+}

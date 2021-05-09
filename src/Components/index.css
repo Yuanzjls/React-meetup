@@ -1,0 +1,66 @@
+.eventcard-title {
+  font-size: 18px;
+}
+.eventcard-body {
+  border-right-width: 24px;
+}
+
+.eventcard-row {
+  padding: 0px 24px;
+}
+
+.eventcard-leftgrid {
+  width: 100%;
+  text-align: left;
+}
+
+.eventcard-centergrid {
+  width: 100%;
+  text-align: center;
+}
+
+.eventcard-subtitle {
+  font-size: 15px;
+}
+
+.textcenter {
+  text-align: center;
+}
+
+.googlemapmarker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.googlemapdiv {
+  height: 33vh;
+  width: 100%;
+}
+
+.buttonatten {
+  width: 100%;
+}
+
+.footer {
+  text-align: center;
+}
+
+.col-login {
+  margin-right: 20px;
+}
+.attendance-text {
+  text-align: center;
+  font-size: medium;
+  font-weight: bold;
+}
+.spinning {
+  margin: 20px 0;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  text-align: center;
+  /* background: rgba(0, 0, 0, 0.05); */
+  border-radius: 4px;
+}
+div.ant-row {
+  row-gap: 20px !important;
+}

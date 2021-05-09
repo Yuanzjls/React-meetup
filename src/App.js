@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./index.css";
@@ -6,7 +6,10 @@ import Calendarx from "./Components/Calendarx";
 import { Layout, Menu, Button, Row, Col, Space, Typography } from "antd";
 import EventDetail from "./Components/EventDetail";
 import Event from "./Components/Event";
-import MapCard from "./Components/MapCard";
+import Login from "./Components/Login";
+import Signup from "./Components/Signup";
+import People from "./Components/People";
+import { useDispatch, useSelector } from "react-redux";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -14,35 +17,66 @@ import {
   VideoCameraOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+import {
+  setAuthorization,
+  setToken,
+  setFirstName,
+  setAuth,
+} from "./features/auth/authSlice";
+import axios from "axios";
 
 const { Header, Sider, Content, Footer } = Layout;
 const { Text } = Typography;
 
 function App() {
   const [collapsed, setCollapsed] = useState(true);
+  const dispatch = useDispatch();
 
   const toggle = () => setCollapsed((collapsed) => !collapsed);
+
+  useEffect(() => {
+    const user_token = localStorage.getItem("user_token");
+    const first_name = localStorage.getItem("first_name");
+    if (user_token === null) {
+      dispatch(setAuth({ token: null, firstName: null, authorization: false }));
+      axios.defaults.headers.Authorization = {};
+    } else {
+      dispatch(
+        setAuth({
+          token: user_token,
+          firstName: first_name,
+          authorization: true,
+        })
+      );
+      const userToken = `Bearer ${user_token}`;
+      axios.defaults.headers.Authorization = userToken;
+    }
+  }, []);
+
+  const auth = useSelector((state) => state.auth);
 
   return (
     <Router>
       <Layout>
         <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className="logo" />
+          <Link to="/">
+            <div className="logo" />
+          </Link>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1" icon={<VideoCameraOutlined />}>
+            <Menu.Item key="Menu1" icon={<VideoCameraOutlined />}>
               <Link to="/event">Event</Link>
             </Menu.Item>
-            <Menu.Item key="2" icon={<UserOutlined />}>
+            <Menu.Item key="Menu2" icon={<UserOutlined />}>
               <Link to="/people">People</Link>
             </Menu.Item>
-            <Menu.Item key="3" icon={<UploadOutlined />}>
+            <Menu.Item key="Menu3" icon={<UploadOutlined />}>
               <Text strong>Profile</Text>
               <Link to="/profile" />
             </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
+          <Header className="site-layout-background site-layout-background-header">
             <Row align="space-between">
               <Col>
                 {collapsed ? (
@@ -51,36 +85,58 @@ function App() {
                   <MenuFoldOutlined className="trigger" onClick={toggle} />
                 )}
               </Col>
-              <Col style={{ marginRight: 20 }}>
-                <Space>
-                  <Button>Login</Button>
-                  <Button type="primary">Sign up</Button>
-                </Space>
+              <Col className="col-login">
+                {auth.authorization ? (
+                  <>
+                    <Typography.Text>
+                      Weclome, {auth.firstName}{" "}
+                    </Typography.Text>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        localStorage.removeItem("user_token");
+                        localStorage.removeItem("first_name");
+                        dispatch(
+                          setAuth({
+                            token: null,
+                            firstName: null,
+                            authorization: false,
+                          })
+                        );
+                        axios.defaults.headers.Authorization = {};
+                      }}
+                    >
+                      Log out
+                    </Button>
+                  </>
+                ) : (
+                  <Space>
+                    <Link to="/login">
+                      <Button>Login</Button>
+                    </Link>
+                    <Link to="/signup">
+                      <Button type="primary">Sign up</Button>
+                    </Link>
+                  </Space>
+                )}
               </Col>
             </Row>
           </Header>
-          <Content
-            className="site-layout-background"
-            style={{
-              margin: "24px 16px",
-              padding: 24,
-              minHeight: 900,
-            }}
-          >
+          <Content className="site-layout-background-content site-layout-background">
             <Switch>
               <Route path="/event/:id">
-                <Row>
-                  <Col span={14}>
-                    <EventDetail />
-                  </Col>
-                  <Col span={10}>
-                    <MapCard />
-                  </Col>
-                </Row>
+                <EventDetail />
               </Route>
-              <Route path="/people">People</Route>
+              <Route path="/people">
+                <People />
+              </Route>
               <Route path="/profile">Profile</Route>
-
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/signup">
+                <Signup />
+              </Route>
               <Route path="/">
                 <Row>
                   <Col span={14}>
@@ -93,7 +149,7 @@ function App() {
               </Route>
             </Switch>
           </Content>
-          <Footer style={{ textAlign: "center" }}>
+          <Footer className="footer">
             Meetup app ©2021 Created by Yuan Zhou
           </Footer>
         </Layout>

@@ -15,7 +15,6 @@ export default function Calendarx() {
         Dispatch(setDate(value.format(format)));
     }
 
-
     return <div className="site-calendar-demo-card" align="center">
         <Text strong>Filter by date : </Text><Switch checked={filterByDateEnable} onChange={(value) => Dispatch(setFilterByDateEnable(value))} />
         <Calendar
