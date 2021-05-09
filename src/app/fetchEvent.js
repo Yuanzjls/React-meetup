@@ -2,7 +2,7 @@ import axios from "axios";
 import { urlBase } from "../features/constants/Url";
 
 export const fetchEvent = (id, action) => (dispatch) => {
-  const url = `${urlBase}${id}`;
+  const url = `${urlBase}events/${id}`;
 
   axios
     .get(url)

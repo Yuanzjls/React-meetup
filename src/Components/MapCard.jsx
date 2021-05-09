@@ -1,46 +1,50 @@
-import { Card, Row, Col, Button, Typography } from "antd"
-import GoogleMapReact from 'google-map-react';
-import moment from 'moment';
+import { Card, Row, Col, Button, Typography } from "antd";
+import GoogleMapReact from "google-map-react";
+import moment from "moment";
 import { useSelector } from "react-redux";
-import {HomeOutlined} from '@ant-design/icons';
-const format = "YYYY-MM-DD HH:mm";
+import { HomeOutlined } from "@ant-design/icons";
+import { formatDateHour as format } from "../features/constants/DateFormat";
+import { googleMapAPIKey } from "../features/constants//env";
 
-
-const Marker = ({ text }) => <div style={{display:"flex", flexDirection:"row", alignItems:"center"}}>    
-    <HomeOutlined/>
+const Marker = ({ text }) => (
+  <div className="googlemapmarker">
+    <HomeOutlined />
     <Typography.Text>{text}</Typography.Text>
-</div>;
+  </div>
+);
 
 export default function MapCard() {
+  const eventDetail = useSelector((state) => state.event.eventDetail);
 
-    const eventDetail = useSelector(state => state.event.eventDetail);
+  if (eventDetail === null) {
+    return;
+  }
 
-    
-    if (eventDetail === null) {
-        return <></>
-    }
-    
-    return <Card>
-        <Row justify="space-between">
-            <Col>
-                <p>Date & Time</p>
-            </Col>
-            <Col>
-                <p>{moment(eventDetail.date).format(format)}</p>
-            </Col>
-        </Row>
-        <Row justify="space-between">
-            <Col>
-                <p>City:</p>
-            </Col>
-            <Col>
-                <p>{eventDetail.city}</p>
-            </Col>
-        </Row>
-        <div style={{ height: '33vh', width: '100%' }}>
+  return (
+    <Card>
+      <Row justify="space-between">
+        <Col>
+          <p>Date & Time</p>
+        </Col>
+        <Col>
+          <p>{moment(eventDetail.date).format(format)}</p>
+        </Col>
+      </Row>
+      <Row justify="space-between">
+        <Col>
+          <p>City:</p>
+        </Col>
+        <Col>
+          <p>{eventDetail.city}</p>
+        </Col>
+      </Row>
+      <div className="googlemapdiv">
         <GoogleMapReact
-          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_KEY }}
-          center={{lat: parseFloat(eventDetail.lat), lng:parseFloat(eventDetail.long)}}
+          bootstrapURLKeys={{ key: googleMapAPIKey }}
+          center={{
+            lat: parseFloat(eventDetail.lat),
+            lng: parseFloat(eventDetail.long),
+          }}
           defaultZoom={8}
         >
           <Marker
@@ -49,8 +53,11 @@ export default function MapCard() {
             text={eventDetail.address}
           />
         </GoogleMapReact>
-        </div>
-        <br></br>
-        <Button type="primary" style={{ width: '100%' }}>Attend</Button>
+      </div>
+      <br></br>
+      <Button type="primary" className="buttonatten">
+        Attend
+      </Button>
     </Card>
+  );
 }
