@@ -16,8 +16,8 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-.site-layout .site-layout-background {
-  background: #fff;
+.site-layout-background {
+  background: #f0f0f5;
 }
 .site-calendar-demo-card {
   min-width: 300px;
@@ -30,10 +30,14 @@
 
 .site-layout-background-header {
   padding: 0px !important;
+  background-color: white !important;
 }
 
 .site-layout-background-content {
   margin: 24px 16px !important;
   padding: 24px !important;
   min-height: 600px !important;
+}
+label {
+  font-weight: bold;
 }
