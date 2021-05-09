@@ -1,5 +1,6 @@
 import PlacesAutocomplete from "react-places-autocomplete";
 import React from "react";
+import { Input } from "antd";
 
 function AutoPlace() {
     const [address, setAddress] = React.useState("");
@@ -18,7 +19,7 @@ function AutoPlace() {
             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => {
                 return (
                     <div>
-                        <input {...getInputProps({ placeholder: "Type address" })} />
+                        <Input {...getInputProps({ placeholder: "Type address" })} />
                         <div>
                             {loading ? <div>Loading</div> : null}
                             {suggestions.map((suggestion, index) => {
