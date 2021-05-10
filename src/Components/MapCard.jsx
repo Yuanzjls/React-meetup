@@ -28,7 +28,7 @@ export default function MapCard(props) {
       axios
         .post(`https://dk-react-backend.herokuapp.com/event-attendee/${id}`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           Modal.success({
             content: `You have successfully registered this event.`,
           });
@@ -40,7 +40,7 @@ export default function MapCard(props) {
       axios
         .delete(`https://dk-react-backend.herokuapp.com/event-attendee/${id}`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           Modal.success({
             content: `You have successfully canceled registering this event.`,
           });

@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
-import AutoPlace from "./AutoPlace";
+// import AutoPlace from "./AutoPlace";
 import { Form, Input, DatePicker, Select, Button, AutoComplete } from "antd";
-import { googleMapAPIKey } from "../features/constants/env"
+// import { googleMapAPIKey } from "../features/constants/env"
+import moment from "moment";
 import PlacesAutocomplete from "react-places-autocomplete";
+import axios from "axios";
+import { format } from "../features/constants/DateFormat"
+import Modal from "antd/lib/modal/Modal";
+import { useHistory } from "react-router";
 const layout = {
   labelCol: {
     span: 0,
@@ -26,12 +31,14 @@ const categories = [
 ];
 
 const CreateEvent = () => {
+  const history = useHistory();
+  const [address, setAddress] = React.useState("");
 
-  const [place, setPlace] = useState("");
   const handleSelect = async (value) => {
-    setPlace(value);
-  }
+    setAddress(value);
+  };
   const [loadedScript, setLoadedScript] = useState(false);
+
 
   // useEffect(() => {
   //   if (!document.querySelector("#google-maps")) {
@@ -54,11 +61,35 @@ const CreateEvent = () => {
   //   setLoadedScript(true);
   // }
 
+
+  const onFinish = (value) => {
+    if (address === '') {
+      console.error("Address is required");
+      alert("Input address");
+      return;
+    }
+    console.log(value);
+    axios.post("https://dk-react-backend.herokuapp.com/events", {
+      title: value.title,
+      describe: value.description,
+      city: address,
+      address: address,
+      category: value.category,
+      date: moment(value.date, format),
+    }).then(res => {
+      Modal.success({
+        content: `Event has been created`,
+      });
+      history.push("/event")
+    })
+  };
+
   return (
     <Form
       {...layout}
 
-      onFinish={value => console.log(value)}
+      onFinish={onFinish}
+      onFinishFailed={value => console.log(value)}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div style={{ width: "70%", marginRight: "10px", backgroundColor: "#fff", padding: "20px 20px 20px 20px", height: "80vh" }}>
@@ -68,7 +99,7 @@ const CreateEvent = () => {
             </span>
           </Form.Item>
           <Form.Item
-            name={"Title"}
+            name="title"
             colon={false}
             label="Title"
             style={formItemStyle}
@@ -145,23 +176,55 @@ const CreateEvent = () => {
               </Select>
             </Form.Item>
           </div>
-          <Form.Item
-            style={formItemStyle}
-            colon={false}
-            name={"location"}
-            label="Location"
-            required={false}
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-            labelAlign="left"
+
+
+          <PlacesAutocomplete
+            value={address}
+            onChange={setAddress}
+            onSelect={handleSelect}
           >
+            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => {
+              return (
+                <>
+                  < Form.Item
+                    style={formItemStyle}
+                    colon={false}
+                    name="location"
+                    label="Location"
+                    required={false}
+                    rules={
+                      [
 
-            <AutoPlace></AutoPlace>
+                      ]}
+                    labelAlign="left"
+                  >
+                    <Input value={address} {...getInputProps({ placeholder: "Type address" })} />
+                    <div>
+                      {loading ? <div>Loading</div> : null}
+                      {suggestions.map((suggestion, index) => {
+                        const style = {
+                          backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
+                        };
+                        return (
+                          <div
+                            key={`map-${index}`}
+                            {...getSuggestionItemProps(suggestion, { style })}
+                          >
+                            {suggestion.description}
+                          </div>
+                        );
+                      })}
+                    </div>
 
-          </Form.Item>
+                  </ Form.Item>
+
+                </>
+
+              );
+            }}
+          </PlacesAutocomplete>
+
+
         </div>
         <div style={{ width: "30%", height: "100%", marginLeft: "10px", backgroundColor: "#fff", display: "flex", justifyContent: "center" }}>
           <Button
@@ -169,7 +232,7 @@ const CreateEvent = () => {
             style={{ width: "85%", marginTop: "20px", marginBottom: "20px" }}
             type="primary"
           >
-            Submit
+            Save
           </Button>
         </div>
       </div>
