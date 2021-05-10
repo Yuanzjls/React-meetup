@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 // import AutoPlace from "./AutoPlace";
-import { Form, Input, DatePicker, Select, Button, AutoComplete } from "antd";
+import { Form, Input, DatePicker, Select, Button, Modal } from "antd";
 // import { googleMapAPIKey } from "../features/constants/env"
 import moment from "moment";
 import PlacesAutocomplete from "react-places-autocomplete";
 import axios from "axios";
-import { format } from "../features/constants/DateFormat"
-import Modal from "antd/lib/modal/Modal";
+import { format } from "../features/constants/DateFormat";
+
 import { useHistory } from "react-router";
 const layout = {
   labelCol: {
@@ -39,7 +39,6 @@ const CreateEvent = () => {
   };
   const [loadedScript, setLoadedScript] = useState(false);
 
-
   // useEffect(() => {
   //   if (!document.querySelector("#google-maps")) {
   //     const script = document.createElement("script");
@@ -61,38 +60,46 @@ const CreateEvent = () => {
   //   setLoadedScript(true);
   // }
 
-
   const onFinish = (value) => {
-    if (address === '') {
+    if (address === "") {
       console.error("Address is required");
       alert("Input address");
       return;
     }
-    console.log(value);
-    axios.post("https://dk-react-backend.herokuapp.com/events", {
-      title: value.title,
-      describe: value.description,
-      city: address,
-      address: address,
-      category: value.category,
-      date: moment(value.date, format),
-    }).then(res => {
-      Modal.success({
-        content: `Event has been created`,
+
+    axios
+      .post("https://dk-react-backend.herokuapp.com/events", {
+        title: value.title,
+        description: value.description,
+        city: address.split(",")[-3],
+        address: address,
+        category: value.category,
+        date: moment(value.date).format(format),
+      })
+      .then((res) => {
+        Modal.success({
+          content: `Event has been created`,
+        });
+        history.push("/event");
       });
-      history.push("/event")
-    })
   };
 
   return (
     <Form
       {...layout}
-
       onFinish={onFinish}
-      onFinishFailed={value => console.log(value)}
+      onFinishFailed={(value) => console.log(value)}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ width: "70%", marginRight: "10px", backgroundColor: "#fff", padding: "20px 20px 20px 20px", height: "80vh" }}>
+        <div
+          style={{
+            width: "70%",
+            marginRight: "10px",
+            backgroundColor: "#fff",
+            padding: "20px 20px 20px 20px",
+            height: "80vh",
+          }}
+        >
           <Form.Item label="">
             <span style={{ fontSize: "22px" }}>
               <b>Create a new event</b>
@@ -142,7 +149,7 @@ const CreateEvent = () => {
             <Form.Item
               style={{ ...formItemStyle, width: "45%" }}
               colon={false}
-              name={"date"}
+              name="date"
               label="Date"
               required={false}
               rules={[
@@ -177,33 +184,50 @@ const CreateEvent = () => {
             </Form.Item>
           </div>
 
-
           <PlacesAutocomplete
             value={address}
             onChange={setAddress}
             onSelect={handleSelect}
           >
-            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => {
+            {({
+              getInputProps,
+              suggestions,
+              getSuggestionItemProps,
+              loading,
+            }) => {
               return (
                 <>
-                  < Form.Item
+                  <Form.Item
                     style={formItemStyle}
                     colon={false}
-                    name="location"
                     label="Location"
+                    name="location"
                     required={false}
-                    rules={
-                      [
-
-                      ]}
+                    rules={[
+                      {
+                        validator: (_, value) => {
+                          if (address !== undefined && address.length !== 0) {
+                            return Promise.resolve();
+                          } else {
+                            return Promise.reject("Address is required");
+                          }
+                        },
+                      },
+                    ]}
                     labelAlign="left"
                   >
-                    <Input value={address} {...getInputProps({ placeholder: "Type address" })} />
+                    <Input
+                      value={address}
+                      {...getInputProps({ placeholder: "Type address" })}
+                    />
+
                     <div>
                       {loading ? <div>Loading</div> : null}
                       {suggestions.map((suggestion, index) => {
                         const style = {
-                          backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
+                          backgroundColor: suggestion.active
+                            ? "#41b6e6"
+                            : "#fff",
                         };
                         return (
                           <div
@@ -215,18 +239,22 @@ const CreateEvent = () => {
                         );
                       })}
                     </div>
-
-                  </ Form.Item>
-
+                  </Form.Item>
                 </>
-
               );
             }}
           </PlacesAutocomplete>
-
-
         </div>
-        <div style={{ width: "30%", height: "100%", marginLeft: "10px", backgroundColor: "#fff", display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            width: "30%",
+            height: "100%",
+            marginLeft: "10px",
+            backgroundColor: "#fff",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Button
             htmlType="submit"
             style={{ width: "85%", marginTop: "20px", marginBottom: "20px" }}
@@ -236,7 +264,7 @@ const CreateEvent = () => {
           </Button>
         </div>
       </div>
-    </Form >
+    </Form>
   );
 };
 export { CreateEvent };
